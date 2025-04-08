@@ -1,0 +1,40 @@
+# This docker compose file defines the hosts on in the network toplogy.
+#
+
+# Indiana Subnetwork
+services:
+  server:
+    image: debian:stable
+
+    container_name: server
+
+    hostname: server
+
+    tty: true
+
+    cap_add:
+      - ALL
+
+    sysctls:
+      - net.ipv4.ip_forward=0
+
+    volumes:
+      - ./share:/share
+
+    networks:
+      # This network must be defined in the networks property below!
+      illinois-net:
+        # Specifiy a static IPv4 address for this container on this network.
+        ipv4_address: 13.12.1.5
+
+    # This command contains everything that should be executed once the
+    # container is about to be launched.
+    #
+    # WARNING: A failure here means that your container will not continue to
+    # live, it will be automatic terminated.
+    #
+    # To see logs from these commands, use the `dcl` alias
+
+      # bash -c "
+    command: >
+      bash /share/set_up_container.sh

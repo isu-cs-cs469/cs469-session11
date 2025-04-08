@@ -1,0 +1,16 @@
+# set the name for the project
+name: session11
+
+include:
+  # include the network compose
+  - path: docker/net/docker-compose.yaml
+    project_directory: .
+  # include the hosts
+  - path:
+    - docker/hosts/docker-compose.indiana.yaml
+    - docker/hosts/docker-compose.illinois.yaml
+    project_directory: .
+  # include the router
+  - path: docker/routers/docker-compose.yaml
+    project_directory: .
+

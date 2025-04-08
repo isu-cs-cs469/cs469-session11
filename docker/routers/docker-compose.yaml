@@ -1,0 +1,25 @@
+# This docker compose file defines any routers that we'd like to use that would
+# allow us to connect multiple subnetwork and/or networks.
+
+services:
+  router:
+    image: debian:stable
+    container_name: router
+    hostname: router
+
+    tty: true
+    cap_add:
+      - ALL
+
+    sysctls:
+      - net.ipv4.ip_forward=0
+
+    volumes:
+      - ./share:/share
+
+    networks:
+      indiana-net:
+      illinois-net:
+
+    command: >
+      bash /share/set_up_container.sh
