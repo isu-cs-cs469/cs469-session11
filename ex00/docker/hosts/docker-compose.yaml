@@ -1,0 +1,54 @@
+# This docker compose file defines the hosts on the network.
+#
+
+services:
+  h1:
+    image: debian:stable
+    container_name: h1
+    hostname: host1
+
+    tty: true
+    cap_add:
+      - ALL
+    volumes:
+      - ./share:/share
+
+    networks:
+      star-net:
+
+    command: >
+      bash /share/set_up_container.sh
+
+  h2:
+    image: debian:stable
+    container_name: h2
+    hostname: host2
+
+    tty: true
+    cap_add:
+      - ALL
+    volumes:
+      - ./share:/share
+
+    networks:
+      star-net:
+
+    command: >
+      bash /share/set_up_container.sh
+
+  h3:
+    image: debian:stable
+    container_name: h3
+    hostname: host3
+
+    tty: true
+    cap_add:
+      - ALL
+    volumes:
+      - ./share:/share
+
+    networks:
+      star-net:
+
+    command: >
+      bash /share/set_up_container.sh

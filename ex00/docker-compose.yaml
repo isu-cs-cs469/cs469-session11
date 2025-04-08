@@ -1,0 +1,10 @@
+name: star
+
+include:
+  # include the network file
+  - path: docker/net/docker-compose.yaml
+    project_directory: .
+
+  # include the hosts in this topology
+  - path: docker/hosts/docker-compose.yaml
+    project_directory: .
