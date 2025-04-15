@@ -1,0 +1,33 @@
+# This docker compose file defines the hosts on in the network toplogy.
+#
+
+# Indiana Subnetwork
+services:
+  client:
+    image: debian:stable
+    container_name: client
+    hostname: client
+
+    # Should this container occupy a tty?
+    tty: true
+
+    cap_add:
+      - ALL
+
+    sysctls:
+      - net.ipv4.ip_forward=0
+
+    volumes:
+      - ./share:/share
+
+    networks:
+      indiana-net:
+        ipv4_address: 11.11.0.3
+
+    command: >
+      bash -c "
+      bash /share/set_up_container.sh &&
+      ip route add 13.12.1.0/24 via 11.11.0.2 &&
+      tail -f /dev/null
+      "
+

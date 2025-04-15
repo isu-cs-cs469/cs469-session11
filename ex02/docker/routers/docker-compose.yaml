@@ -1,0 +1,59 @@
+# This docker compose file defines any routers that we'd like to use that would
+# allow us to connect multiple subnetwork and/or networks.
+
+services:
+  midrouter:
+    image: debian:stable
+    container_name: midrouter
+    hostname: midrouter
+
+    tty: true
+    cap_add:
+      - ALL
+
+    sysctls:
+      - net.ipv4.ip_forward=1
+
+    volumes:
+      - ./share/:/share
+
+    networks:
+      indiana-net:
+        ipv4_address: 11.11.0.2
+      middle-net:
+        ipv4_address: 12.12.2.2
+
+    command: >
+      bash -c "
+      bash /share/set_up_container.sh &&
+      ip route add 13.12.1.0/24 via 12.12.2.3 &&
+      tail -f /dev/null
+      "
+
+  router:
+    image: debian:stable
+    container_name: router
+    hostname: router
+
+    tty: true
+    cap_add:
+      - ALL
+
+    sysctls:
+      - net.ipv4.ip_forward=1
+
+    volumes:
+      - ./share:/share
+
+    networks:
+      illinois-net:
+        ipv4_address: 13.12.1.2
+      middle-net:
+        ipv4_address: 12.12.2.3
+
+    command: >
+      bash -c "
+      bash /share/set_up_container.sh &&
+      ip route add 11.11.0.0/24 via 12.12.2.2 &&
+      tail -f /dev/null
+      "
